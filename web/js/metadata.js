@@ -163,12 +163,7 @@ function initMetaNode() {
       }
     }).bind(this);
 
-    // setTimeout(async () => {
-    //   this.setSize(this.size);
-    //   this.setDirtyCanvas(true, true);
-    // }, 128);
-
-    // prevent update on initialization
+    // prevent update during initialization
     setTimeout(() => {
       this.onConnectionsChange = function() {
         const imageNode = this.$shits.getImageNode();
@@ -203,7 +198,7 @@ function initImageNode() {
     }
   }
 
-  // prevent callbacks during initialization
+  // prevent send callback during initialization
   setTimeout(() => {
     switch(this.comfyClass) {
       // core

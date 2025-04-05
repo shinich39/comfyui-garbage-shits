@@ -130,6 +130,12 @@ const createComfyNode = function(className, values, options) {
 
 // methods
 
+function wait(delay) {
+  return new Promise(function (resolve) {
+    return setTimeout(resolve, delay);
+  });
+}
+
 const match = function(node, query) {
   if (typeof query === "number") {
     return node.id === query;
@@ -191,8 +197,6 @@ const getValues = function(node) {
   return result;
 }
 
-const getValue = getValues;
-
 const setValues = function(node, values) {
   node = Node(node);
   if (node.widgets) {
@@ -200,12 +204,11 @@ const setValues = function(node, values) {
       const widget = node.widgets.find(e => e.name === key);
       if (widget) {
         widget.value = value;
+        node.setDirtyCanvas(true, true);
       }
     }
   }
 }
-
-const setValue = setValues;
 
 const connect = function(outputNode, inputNode, outputName, inputName) {
   outputNode = Node(outputNode);
@@ -266,6 +269,13 @@ const connect = function(outputNode, inputNode, outputName, inputName) {
   }
 }
 
+const generateSeed = function() {
+  let max = Math.min(1125899906842624, MAX_SEED);
+  let min = Math.max(-1125899906842624, MIN_SEED);
+  let range = (max - min) / (STEPS_OF_SEED / 10);
+  return Math.floor(Math.random() * range) * (STEPS_OF_SEED / 10) + min;
+}
+
 const generateFloat = function(min, max) {
   if (typeof min !== "number") {
     min = Number.MIN_SAFE_INTEGER;
@@ -280,11 +290,42 @@ const generateInt = function(min, max) {
   return Math.floor(generateFloat(min, max));
 }
 
-const generateSeed = function() {
-  let max = Math.min(1125899906842624, MAX_SEED);
-  let min = Math.max(-1125899906842624, MIN_SEED);
-  let range = (max - min) / (STEPS_OF_SEED / 10);
-  return Math.floor(Math.random() * range) * (STEPS_OF_SEED / 10) + min;
+const generatePlots = function(...args) {
+  // remove empty arrays
+  args = args.filter((arg) => arg.length !== 0);
+
+  const result = [],
+    indexes = Array(args.length).fill(0);
+
+  let isFinished = args.length === 0;
+
+  const increase = function () {
+    for (let i = args.length - 1; i >= 0; i--) {
+      // decrease current index
+      if (indexes[i] < args[i].length - 1) {
+        indexes[i] += 1;
+        return;
+      }
+      // reset current index
+      indexes[i] = 0;
+    }
+    isFinished = true;
+  };
+
+  const getValues = function () {
+    const result = [];
+    for (let i = 0; i < args.length; i++) {
+      result.push(args[i][indexes[i]]);
+    }
+    return result;
+  };
+
+  while (!isFinished) {
+    result.push(getValues());
+    increase();
+  }
+
+  return result;
 }
 
 const random = function(...args) {

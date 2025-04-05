@@ -9,14 +9,20 @@ Collection of garbage
 - Scalable random selector node
 - Show metadata used by checkpoint creator
 - Load image with mask and sketch
-- Quickly masking and sketching
+- Quickly masking and sketching on preview
 - Prevent system sleep and screen saver
-- Nested dynamic prompt
+- Nestable dynamic prompt in textarea
 - Fix dynamic prompt value in workflow
 
 ## Nodes
 
 ...
+
+## Examples
+
+- XYZ plot
+
+<img src="./examples/xyz.png" width="720px" />
 
 ## Acknowledgements
 
