@@ -13,6 +13,7 @@ Collection of garbage
 - Prevent system sleep and screen saver
 - Nestable dynamic prompt in textarea
 - Fix dynamic prompt value in workflow
+- Scalable plot using javascript
 
 ## Nodes
 
