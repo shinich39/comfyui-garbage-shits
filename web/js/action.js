@@ -13,7 +13,7 @@ const Settings = {
   "EnableNativation": true,
   "EnableComment": true,
   "EnableBracket": true,
-  "SplitDynamicPrompt": true,
+  // "SplitDynamicPrompt": true, // deprecated
   "OverrideDynamicPrompt": true,
 }
 
@@ -370,9 +370,10 @@ function bracketHandler(e) {
   let center = currValue.substring(currStart, currEnd);
   let right = currValue.substring(currEnd);
 
-  if (Settings.SplitDynamicPrompt && opening == "{") {
-    center = center.replace(/(\s*)\,(\s*)/g, "$1,|$2");
-  }
+  // deprecated
+  // if (Settings.SplitDynamicPrompt && opening == "{") {
+  //   center = center.replace(/(\s*)\,(\s*)/g, "$1,|$2");
+  // }
 
   newValue = left + opening + center + closing + right;
   newStart = left.length + opening.length;
@@ -585,17 +586,18 @@ export default {
         Settings["OverrideDynamicPrompt"] = value;
       }
     },
-    {
-      id: 'shinich39.GarbageShits.Action.SplitDynamicPrompt',
-      category: ['GarbageShits', 'Action', 'SplitDynamicPrompt'],
-      name: 'Split Dynamic Prompt',
-      tooltip: 'Split tokens when wrapping tokens to bracket',
-      type: 'boolean',
-      defaultValue: true,
-      onChange: (value) => {
-        Settings["SplitDynamicPrompt"] = value;
-      }
-    },
+    // deprecated
+    // {
+    //   id: 'shinich39.GarbageShits.Action.SplitDynamicPrompt',
+    //   category: ['GarbageShits', 'Action', 'SplitDynamicPrompt'],
+    //   name: 'Split Dynamic Prompt',
+    //   tooltip: 'Split tokens when wrapping tokens to bracket',
+    //   type: 'boolean',
+    //   defaultValue: true,
+    //   onChange: (value) => {
+    //     Settings["SplitDynamicPrompt"] = value;
+    //   }
+    // },
     {
       id: 'shinich39.GarbageShits.Action.EnableBracket',
       category: ['GarbageShits', 'Action', 'EnableBracket'],

@@ -11,6 +11,7 @@ Collection of garbage
 - Load image with mask and sketch
 - Quickly masking and sketching
 - Prevent system sleep and screen saver
+- Nested dynamic prompt
 - Fix dynamic prompt value in workflow
 
 ## Nodes
