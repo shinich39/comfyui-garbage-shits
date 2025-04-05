@@ -28,13 +28,13 @@ def activate_wakeup(mode = 0):
       wakeup = keep.running()
       wakeup._activate()
       wakeup_mode = mode
-      print(f'[comfyui-garbage-shits] Avtivate power mode: {"Sleep" if mode == 1 else "Screen Saver"}')
+      print(f'[comfyui-garbage-shits] Activate power mode: {"Sleep" if mode == 1 else "Screen Saver"}')
     elif mode == 2:
       # prevent screen saver
       wakeup = keep.presenting()
       wakeup._activate()
       wakeup_mode = mode
-      print(f'[comfyui-garbage-shits] Avtivate power mode: {"Sleep" if mode == 1 else "Screen Saver"}')
+      print(f'[comfyui-garbage-shits] Activate power mode: {"Sleep" if mode == 1 else "Screen Saver"}')
     else:
       print(f'[comfyui-garbage-shits] Invalid power mode: {mode}')
   else:
