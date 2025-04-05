@@ -112,7 +112,7 @@ function parseString(str) {
     });
 }
 
-function dynamicPrompt(prompt) {
+function parseDynamicPrompt(prompt) {
   let offset = 0, 
       i = prompt.indexOf("{", offset);
   while(i > -1) {
@@ -676,7 +676,7 @@ export default {
 
           // Bugfix: Custom-Script presetText.js has overwrite original dynamicPrompt
           r = stripComments(r);
-          r = dynamicPrompt(r);
+          r = parseDynamicPrompt(r);
 
           // Overwrite the value in the serialized workflow pnginfo
           if (workflowNode?.widgets_values) {

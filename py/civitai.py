@@ -35,7 +35,7 @@ def get_model_hashes():
     file_path = folder_paths.get_full_path("checkpoints", file_rel_path)
 
     if file_name not in hashes:
-      print(f"[comfyui-garbage-shits] {file_name}'s hash not found. generating hash...")
+      print(f"[comfyui-garbage-shits] {file_name} hash not found. generating hash...")
       hashes[file_name] = read_model_hash(file_path)
       update_model_hashes(hashes)
 
