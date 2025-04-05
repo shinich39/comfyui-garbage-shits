@@ -60,7 +60,7 @@ function execNode(node, args) {
     const QUEUE_MODE = getQueueMode();
     const AUTO_QUEUE = getQueueMode() !== "disabled";
 
-    const createNode = (className, values, options) => createComfyNode.apply(node, [className, values, options]);
+    const create = (className, values, options) => createComfyNode.apply(node, [className, values, options]);
 
     try {
       eval(COMMAND);
@@ -74,7 +74,7 @@ function execNode(node, args) {
 }
 
 function run(...nodes) {
-  nodes = nodes.map(findNode);
+  nodes = nodes.map(Node);
   for (const node of nodes) {
     node.run();
   }
@@ -142,7 +142,7 @@ const match = function(node, query) {
   }
 }
 
-const findNode = function(query, reverse) {
+const Node = function(query, reverse) {
   if (!reverse) {
     for (let i = 0; i < app.graph._nodes.length; i++) {
       const n = app.graph._nodes[i];
@@ -160,7 +160,7 @@ const findNode = function(query, reverse) {
   }
 }
 
-const findNodes = function(query, reverse) {
+const Nodes = function(query, reverse) {
   const result = [];
   if (!reverse) {
     for (let i = 0; i < app.graph._nodes.length; i++) {
@@ -181,7 +181,7 @@ const findNodes = function(query, reverse) {
 }
 
 const getValues = function(node) {
-  node = findNode(node);
+  node = Node(node);
   let result = {};
   if (node.widgets) {
     for (const widget of node.widgets) {
@@ -194,7 +194,7 @@ const getValues = function(node) {
 const getValue = getValues;
 
 const setValues = function(node, values) {
-  node = findNode(node);
+  node = Node(node);
   if (node.widgets) {
     for (const [key, value] of Object.entries(values)) {
       const widget = node.widgets.find(e => e.name === key);
@@ -207,9 +207,9 @@ const setValues = function(node, values) {
 
 const setValue = setValues;
 
-const connectNodes = function(outputNode, inputNode, outputName, inputName) {
-  outputNode = findNode(outputNode);
-  inputNode = findNode(inputNode);
+const connect = function(outputNode, inputNode, outputName, inputName) {
+  outputNode = Node(outputNode);
+  inputNode = Node(inputNode);
 
   if (!outputName) {
     if (outputNode.outputs.length === 1) {
@@ -292,42 +292,42 @@ const random = function(...args) {
 }
 
 const bypass = function(...nodes) {
-  nodes = nodes.map(findNode);
+  nodes = nodes.map(Node);
   for (const node of nodes) {
     node.mode = 4;
   }
 }
 
 const unbypass = function(...nodes) {
-  nodes = nodes.map(findNode);
+  nodes = nodes.map(Node);
   for (const node of nodes) {
     node.mode = 0;
   }
 }
 
 const pin = function(...nodes) {
-  nodes = nodes.map(findNode);
+  nodes = nodes.map(Node);
   for (const node of nodes) {
     node.pin(true);
   }
 }
 
 const unpin = function(...nodes) {
-  nodes = nodes.map(findNode);
+  nodes = nodes.map(Node);
   for (const node of nodes) {
     node.pin(false);
   }
 }
 
 const remove = function(...nodes) {
-  nodes = nodes.map(findNode);
+  nodes = nodes.map(Node);
   for (const node of nodes) {
     app.graph.remove(node);    
   }
 }
 
 const select = function(...nodes) {
-  nodes = nodes.map(findNode);
+  nodes = nodes.map(Node);
   app.canvas.deselectAllNodes();
   app.canvas.selectNodes(nodes);
 }
@@ -346,35 +346,35 @@ const cancel = async function() {
 }
 
 const putOnLeft = function(targetNode, anchorNode) {
-  targetNode = findNode(targetNode);
-  anchorNode = findNode(anchorNode);
+  targetNode = Node(targetNode);
+  anchorNode = Node(anchorNode);
   targetNode.pos[0] = anchorNode.pos[0] - targetNode.size[0] - DEFAULT_MARGIN_X;
   targetNode.pos[1] = anchorNode.pos[1];
 }
 
 const putOnRight = function(targetNode, anchorNode) {
-  targetNode = findNode(targetNode);
-  anchorNode = findNode(anchorNode);
+  targetNode = Node(targetNode);
+  anchorNode = Node(anchorNode);
   targetNode.pos[0] = anchorNode.pos[0] + anchorNode.size[0] + DEFAULT_MARGIN_X;
   targetNode.pos[1] = anchorNode.pos[1];
 }
 
 const putOnTop = function(targetNode, anchorNode) {
-  targetNode = findNode(targetNode);
-  anchorNode = findNode(anchorNode);
+  targetNode = Node(targetNode);
+  anchorNode = Node(anchorNode);
   targetNode.pos[0] = anchorNode.pos[0];
   targetNode.pos[1] = anchorNode.pos[1] - targetNode.size[1] - DEFAULT_MARGIN_Y;
 }
 
 const putOnBottom = function(targetNode, anchorNode) {
-  targetNode = findNode(targetNode);
-  anchorNode = findNode(anchorNode);
+  targetNode = Node(targetNode);
+  anchorNode = Node(anchorNode);
   targetNode.pos[0] = anchorNode.pos[0];
   targetNode.pos[1] = anchorNode.pos[1] + anchorNode.size[1] + DEFAULT_MARGIN_Y;
 }
 
 const moveToRight = function(targetNode) {
-  targetNode = findNode(targetNode);
+  targetNode = Node(targetNode);
   let isChanged = true;
   while(isChanged) {
     isChanged = false;
@@ -400,7 +400,7 @@ const moveToRight = function(targetNode) {
 }
 
 const moveToBottom = function(targetNode) {
-  targetNode = findNode(targetNode);
+  targetNode = Node(targetNode);
   let isChanged = true;
   while(isChanged) {
     isChanged = false;
@@ -426,23 +426,23 @@ const moveToBottom = function(targetNode) {
 }
 
 const getX = function(node) {
-  return findNode(node).pos[0];
+  return Node(node).pos[0];
 }
 
 const getY = function(node) {
-  return findNode(node).pos[1];
+  return Node(node).pos[1];
 }
 
 const getWidth = function(node) {
-  return findNode(node).size[0];
+  return Node(node).size[0];
 }
 
 const getHeight = function(node) {
-  return findNode(node).size[1];
+  return Node(node).size[1];
 }
 
 const getRect = function(node) {
-  node = findNode(node);
+  node = Node(node);
   return [
     node.pos[0],
     node.pos[1],
@@ -452,29 +452,29 @@ const getRect = function(node) {
 } 
 
 const setX = function(node, n) {
-  node = findNode(node);
+  node = Node(node);
   node.pos[0] = n;
 }
 
 const setY = function(node, n) {
-  node = findNode(node);
+  node = Node(node);
   node.pos[1] = n;
 }
 
 const setWidth = function(node, w) {
-  node = findNode(node);
+  node = Node(node);
   node.size[0] = w;
   node.onResize(node.size);
 }
 
 const setHeight = function(node, h) {
-  node = findNode(node);
+  node = Node(node);
   node.size[1] = h;
   node.onResize(node.size);
 }
 
 const setRect = function(node, [x, y, width, height]) {
-  node = findNode(node);
+  node = Node(node);
   if (typeof x !== "number") {
     x = getX(node);
   }

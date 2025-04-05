@@ -1,7 +1,6 @@
 import os
 import json
 import traceback
-import atexit
 
 import folder_paths
 import comfy
@@ -17,34 +16,6 @@ from PIL.PngImagePlugin import PngInfo
 
 from .utils.image import parse_file_path, get_metadata, get_images
 from .civitai import get_model_hashes, get_ckpt_json
-wakeup = None
-wakeup_mode = None
-
-def deactivate_wakeup():
-  global wakeup, wakeup_mode
-  if wakeup != None:
-    wakeup._deactivate()
-    wakeup = None
-    wakeup_mode = None
-
-def activate_wakeup(mode):
-  global wakeup, wakeup_mode
-  
-  from wakepy import keep
-
-  if wakeup != None and wakeup_mode != mode:
-    deactivate_wakeup()
-
-  if mode == 1:
-    # sleep
-    wakeup = keep.running()
-    wakeup._activate()
-  elif mode == 2:
-    # prevent screen saver
-    wakeup = keep.presenting()
-    wakeup._activate()
-    
-  wakeup_mode = mode
 
 @PromptServer.instance.routes.get("/shinich39/comfyui-garbage-shits/get-comfy-options")
 async def _get_comfy_options(request):
@@ -235,46 +206,3 @@ async def _get_ckpt_workflows(request):
   except Exception:
     print(traceback.format_exc())
     return web.Response(status=400)
-
-@PromptServer.instance.routes.get("/shinich39/comfyui-garbage-shits/disable-system-sleep")
-async def _disable_system_sleep(request):
-  try:
-    deactivate_wakeup()
-    print(f"[comfyui-garbage-shits] Disable System Sleep")
-    return web.Response(status=200)
-  except Exception:
-    print(traceback.format_exc())
-    return web.Response(status=400)
-
-@PromptServer.instance.routes.get("/shinich39/comfyui-garbage-shits/enable-system-sleep")
-async def _enable_system_sleep(request):
-  try:
-    activate_wakeup(1)
-    print(f"[comfyui-garbage-shits] Enable System Sleep")
-    return web.Response(status=200)
-  except Exception:
-    print(traceback.format_exc())
-    return web.Response(status=400)
-  
-@PromptServer.instance.routes.get("/shinich39/comfyui-garbage-shits/disable-screen-saver")
-async def _disable_screen_saver(request):
-  try:
-    deactivate_wakeup()
-    print(f"[comfyui-garbage-shits] Disable Screen Saver")
-    return web.Response(status=200)
-  except Exception:
-    print(traceback.format_exc())
-    return web.Response(status=400)
-  
-
-@PromptServer.instance.routes.get("/shinich39/comfyui-garbage-shits/enable-screen-saver")
-async def _enable_screen_saver(request):
-  try:
-    activate_wakeup(2)
-    print(f"[comfyui-garbage-shits] Enable Screen Saver")
-    return web.Response(status=200)
-  except Exception:
-    print(traceback.format_exc())
-    return web.Response(status=400)
-  
-atexit.register(deactivate_wakeup)

@@ -9,10 +9,10 @@ import io
 import folder_paths
 
 __DIRNAME = os.path.dirname(os.path.abspath(__file__))
-JSON_DIR_PATH = os.path.join(__DIRNAME, "json")
-LATEST_DATA_PATH = os.path.join(__DIRNAME, "json", "latest.json")
-CKPT_DATA_PATH = os.path.join(__DIRNAME, "json", "checkpoints.json")
-HASH_DATA_PATH = os.path.join(__DIRNAME, "json", "hashes.json")
+JSON_DIR_PATH = os.path.join(__DIRNAME, "..", "json")
+LATEST_DATA_PATH = os.path.join(JSON_DIR_PATH, "latest.json")
+CKPT_DATA_PATH = os.path.join(JSON_DIR_PATH, "checkpoints.json")
+HASH_DATA_PATH = os.path.join(JSON_DIR_PATH, "hashes.json")
 REPO_URL = "https://github.com/shinich39/civitai-model-json"
 LATEST_DATA_URL = "https://raw.githubusercontent.com/shinich39/civitai-model-json/refs/heads/main/dist/latest.json"
 CKPT_DATA_URL = "https://raw.githubusercontent.com/shinich39/civitai-model-json/refs/heads/main/dist/checkpoints.json.gz"

@@ -13,6 +13,7 @@ from .py.random import *
 from .py.image import *
 from .py.run import *
 from .py.civitai import *
+from .py.power import *
 
 install_wakepy()
 
