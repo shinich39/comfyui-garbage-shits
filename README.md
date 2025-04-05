@@ -21,6 +21,8 @@ Collection of garbage
 
 ## Examples
 
+Drag and drop image on ComfyUI
+
 - XYZ plot
 
 <img src="./examples/xyz.png" width="720px" />
