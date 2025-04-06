@@ -325,7 +325,7 @@ async function updateMetaNodes() {
   for (const node of app.graph._nodes) {
     if (Types.Meta.indexOf(node.comfyClass) > -1) {
       try {
-        await node.shits.update();
+        await node.$shits.update();
       } catch(err) {
         console.error(err);
       }
