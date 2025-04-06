@@ -4,7 +4,7 @@ export function parseWorkflow(workflow, prompt) {
   const result = [];
 
   // Get Notes from workflow
-  if (Array.isArray(workflow.nodes)) {
+  if (Array.isArray(workflow?.nodes)) {
     for (const node of workflow.nodes) {
       try {
         if (node.type !== "Note") {

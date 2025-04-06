@@ -18,11 +18,11 @@ from .py.power import *
 install_wakepy()
 
 NODE_CLASS_MAPPINGS = {
-  "ShowNodesFromImage": ShowNodesFromImage, 
-  "LoadBooleanFromImage": LoadBooleanFromImage, 
-  "LoadIntFromImage": LoadIntFromImage, 
-  "LoadFloatFromImage": LoadFloatFromImage, 
-  "LoadStringFromImage": LoadStringFromImage, 
+  "ShowNodesFromImage": ShowNodesFromImage,
+  "LoadBooleanFromImage": LoadBooleanFromImage,
+  "LoadIntFromImage": LoadIntFromImage,
+  "LoadFloatFromImage": LoadFloatFromImage,
+  "LoadStringFromImage": LoadStringFromImage,
   "LoadComboFromImage": LoadComboFromImage,
   "RandomRoutes": RandomRoutes,
   "LoadMaskedImage": LoadMaskedImage,
@@ -30,11 +30,11 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-  "ShowNodesFromImage": "Show Nodes from Image", 
-  "LoadBooleanFromImage": "Load Boolean from Image", 
-  "LoadIntFromImage": "Load Int from Image", 
-  "LoadFloatFromImage": "Load Float from Image", 
-  "LoadStringFromImage": "Load String from Image", 
+  "ShowNodesFromImage": "Show Nodes from Image",
+  "LoadBooleanFromImage": "Load Boolean from Image",
+  "LoadIntFromImage": "Load Int from Image",
+  "LoadFloatFromImage": "Load Float from Image",
+  "LoadStringFromImage": "Load String from Image",
   "LoadMaskedImage": "Load Masked Image",
   "RunJavascript": "Run Javascript",
 }

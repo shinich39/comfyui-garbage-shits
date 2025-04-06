@@ -236,12 +236,9 @@ const connect = function(outputNode, inputNode, outputName, inputName) {
     inputName = outputName;
   }
 
-  outputName = outputName.toUpperCase();
-  inputName = inputName.toLowerCase();
-
-  let output = outputName ? outputNode.outputs?.find(e => e.name.toUpperCase() === outputName) : null; // uppercase
+  let output = outputName ? outputNode.outputs?.find(e => e.name === outputName) : null;
   let outputSlot;
-  let input = inputName ? inputNode.inputs?.find(e => e.name.toLowerCase() === inputName) : null; // lowercase
+  let input = inputName ? inputNode.inputs?.find(e => e.name === inputName) : null;
   let inputSlot;
 
   if (output) {
