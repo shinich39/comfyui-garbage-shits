@@ -11,13 +11,13 @@ const STEPS_OF_SEED = 10;
 const DEFAULT_MARGIN_X = 32;
 const DEFAULT_MARGIN_Y = 64;
 
-function getNodes(type) {
+function getRunNodes(type) {
   return app.graph._nodes.filter(e => e.comfyClass === CLASS_NAME && 
     e.widgets?.find(e => e.name === "event")?.value === type);
 }
 
 function execNodes(type, args) {
-  const nodes = getNodes(type)
+  const nodes = getRunNodes(type)
     .filter((node) => node.mode === 0);
 
   for (const node of nodes) {
@@ -45,7 +45,8 @@ function execNode(node, args) {
     const STATE = node.STATE;
     const PROPS = node.PROPS;
     const NODES = app.graph._nodes;
-    const LINKS = app.graph.links;
+    const GROUPS = app.graph._groups;
+    const LINKS = app.graph._links;
     const ARGS = args ?? [];
 
     const DATE = new Date();
@@ -136,30 +137,67 @@ function wait(delay) {
   });
 }
 
-const match = function(node, query) {
+const queryNode = function(node, query) {
   if (typeof query === "number") {
     return node.id === query;
-  } else if (typeof query === "string") {
-    return node.title === query || node.comfyClass === query || node.type === query;
-  } else if (typeof query === "object") {
-    return node.id === query.id;
-  } else {
-    return false;
   }
+  if (typeof query === "string") {
+    return node.title === query || node.comfyClass === query || node.type === query;
+  }
+  if (typeof query === "object") {
+    return node.id === query.id;
+  }
+  return false;
+}
+
+const queryGroup = function(group, query) {
+  // if (typeof query === "number") {
+  //   return group.id === query;
+  // }
+  if (typeof query === "string") {
+    return group.title === query;
+  }
+  if (typeof query === "object") {
+    return group.id === query.id;
+  }
+  return false;
+}
+
+const $ = function(...args) {
+  const groups = [], nodes = [];
+  for (const arg of args) {
+    if (arg instanceof LGraphGroup) {
+      arg.recomputeInsideNodes();
+      groups.push(arg);
+      continue;
+    }
+
+    const node = Node(arg);
+    if (node) {
+      nodes.push(node);
+      continue;
+    }
+
+    const group = Group(arg);
+    if (group) {
+      groups.push(group);
+    }
+  }
+  return [nodes, groups];
 }
 
 const Node = function(query, reverse) {
   if (!reverse) {
     for (let i = 0; i < app.graph._nodes.length; i++) {
       const n = app.graph._nodes[i];
-      if (match(n, query)) {
+      if (queryNode(n, query)) {
         return n;
       }
     }
   } else {
     for (let i = app.graph._nodes.length - 1; i >= 0; i--) {
       const n = app.graph._nodes[i];
-      if (match(n, query)) {
+      if (queryNode(n, query)) {
         return n;
       }
     }
@@ -171,15 +209,57 @@ const Nodes = function(query, reverse) {
   if (!reverse) {
     for (let i = 0; i < app.graph._nodes.length; i++) {
       const n = app.graph._nodes[i];
-      if (match(n, query)) {
+      if (queryNode(n, query)) {
         result.push(n);
       }
     }
   } else {
     for (let i = app.graph._nodes.length - 1; i >= 0; i--) {
       const n = app.graph._nodes[i];
-      if (match(n, query)) {
+      if (queryNode(n, query)) {
         result.push(n);
+      }
+    }
+  }
+  return result;
+}
+
+const Group = function(query, reverse) {
+  if (!reverse) {
+    for (let i = 0; i < app.graph._groups.length; i++) {
+      const g = app.graph._groups[i];
+      if (queryGroup(g, query)) {
+        g.recomputeInsideNodes();
+        return g;
+      }
+    }
+  } else {
+    for (let i = app.graph._groups.length - 1; i >= 0; i--) {
+      const g = app.graph._groups[i];
+      if (queryGroup(g, query)) {
+        g.recomputeInsideNodes();
+        return g;
+      }
+    }
+  }
+}
+
+const Groups = function(query, reverse) {
+  const result = [];
+  if (!reverse) {
+    for (let i = 0; i < app.graph._groups.length; i++) {
+      const g = app.graph._groups[i];
+      if (queryGroup(g, query)) {
+        g.recomputeInsideNodes();
+        result.push(g);
+      }
+    }
+  } else {
+    for (let i = app.graph._groups.length - 1; i >= 0; i--) {
+      const g = app.graph._groups[i];
+      if (queryGroup(g, query)) {
+        g.recomputeInsideNodes();
+        result.push(g);
       }
     }
   }
@@ -329,43 +409,73 @@ const random = function(...args) {
   return args[generateInt(0, args.length)];
 }
 
-const bypass = function(...nodes) {
-  nodes = nodes.map(Node);
+const bypass = function(...args) {
+  const [nodes, groups] = $(...args);
   for (const node of nodes) {
     node.mode = 4;
   }
+
+  for (const group of groups) {
+    for (const node of group.nodes) {
+      node.mode = 4;
+    }
+  }
 }
 
-const unbypass = function(...nodes) {
-  nodes = nodes.map(Node);
+const unbypass = function(...args) {
+  const [nodes, groups] = $(...args);
   for (const node of nodes) {
     node.mode = 0;
   }
+  for (const group of groups) {
+    for (const node of group.nodes) {
+      node.mode = 0;
+    }
+  }
 }
 
-const pin = function(...nodes) {
-  nodes = nodes.map(Node);
+const pin = function(...args) {
+  const [nodes, groups] = $(...args);
   for (const node of nodes) {
     node.pin(true);
   }
+  for (const group of groups) {
+    for (const node of group.nodes) {
+      node.pin(true);
+    }
+  }
 }
 
-const unpin = function(...nodes) {
-  nodes = nodes.map(Node);
+const unpin = function(...args) {
+  const [nodes, groups] = $(...args);
   for (const node of nodes) {
     node.pin(false);
   }
-}
-
-const remove = function(...nodes) {
-  nodes = nodes.map(Node);
-  for (const node of nodes) {
-    app.graph.remove(node);    
+  for (const group of groups) {
+    for (const node of group.nodes) {
+      node.pin(false);
+    }
   }
 }
 
-const select = function(...nodes) {
-  nodes = nodes.map(Node);
+const remove = function(...args) {
+  const [nodes, groups] = $(...args);
+  for (const node of nodes) {
+    app.graph.remove(node);    
+  }
+  for (const group of groups) {
+    group.recomputeInsideNodes();
+    app.graph.remove(group);
+  }
+}
+
+const select = function(...args) {
+  const [nodes, groups] = $(...args);
+  for (const group of groups) {
+    for (const node of group.nodes) {
+      nodes.push(node);
+    }
+  }
   app.canvas.deselectAllNodes();
   app.canvas.selectNodes(nodes);
 }

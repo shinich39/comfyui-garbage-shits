@@ -14,18 +14,36 @@ Collection of garbage
 - Nestable dynamic prompt in textarea
 - Fix dynamic prompt value in workflow
 - Scalable plot using javascript
-
-## Nodes
-
-...
+- Set same seed to all samplers
+- Run only specific group in workflow
 
 ## Examples
 
-Drag and drop image on ComfyUI
+Drag and drop image on ComfyUI to test.
+
+- Global seed
+
+<img src="./examples/global-seed.png" width="512px" />
+
+- Random lora
+
+<img src="./examples/random-lora.png" width="512px" />
+
+- Random connection
+
+<img src="./examples/random-connection.png" width="512px" />
+
+- Run random group
+
+<img src="./examples/run-random-group.png" width="768px" />
+
+- Run a specific group
+
+<img src="./examples/run-specific-group.png" width="768px" />
 
 - XYZ plot
 
-<img src="./examples/xyz.png" width="720px" />
+<img src="./examples/xyz.png" width="768px" />
 
 ## Acknowledgements
 
