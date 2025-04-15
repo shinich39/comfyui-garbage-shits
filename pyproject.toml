@@ -1,0 +1,14 @@
+[project]
+name = "comfyui-garbage-shits"
+description = "Collection of garbage"
+version = "1.0.1"
+license = { file = "LICENSE" }
+
+[project.urls]
+Repository = "https://github.com/shinich39/comfyui-garbage-shits"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "shinich39"
+DisplayName = "comfyui-garbage-shits"
+Icon = ""
