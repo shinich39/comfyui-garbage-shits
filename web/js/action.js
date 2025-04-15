@@ -211,8 +211,7 @@ function parseGlobalPrompt(prompt) {
   const globalPrompts = getGlobalPrompts();
 
   for (const [key, values] of Object.entries(globalPrompts)) {
-    const value = values[Math.floor(Math.random() * values.length)];
-    prompt = prompt.replaceAll(`$${key}`, value || "");
+    prompt = prompt.replaceAll(`$${key}`, () => values[Math.floor(Math.random() * values.length)] || "");
   }
 
   return prompt;
@@ -384,16 +383,22 @@ function beautifyHandler(e) {
     } else if (v === "]") {
       w++;
     } else if (v === "{") {
-      acc += `\n${"  ".repeat(d++)}{`;
+      if (last && (last !== "}" && last !== "|")) {
+        acc += `\n${"  ".repeat(d)}`;
+      }
+      acc += `{`;
+      d++;
     } else if (v === "}") {
       acc += `\n${"  ".repeat(--d)}}`;
     } else if (v === "|") {
       acc += `|`;
-      // acc += `|\n${"  ".repeat(d)}`;
     } else if (v === ",") {
+      if (last === "{" || last === "}" || last === "|") {
+        acc += `\n${"  ".repeat(d)}`;
+      }
       acc += ", ";
     } else {
-      if (last === "{" || last === "}") {
+      if (last === "{" || last === "}" || last === "|") {
         acc += `\n${"  ".repeat(d)}`;
       }
       acc += setWeights(v, w);
