@@ -383,12 +383,10 @@ function beautifyHandler(e) {
     } else if (v === "]") {
       w++;
     } else if (v === "{") {
-      if (shiftKey) {
-        if (last && last !== "|") {
+      if (last) {
+        if (shiftKey) {
           acc += `\n${"  ".repeat(d)}`;
-        }
-      } else {
-        if (last && d === 0) {
+        } else {
           acc += `\n`;
         }
       }
