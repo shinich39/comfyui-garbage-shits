@@ -1,4 +1,3 @@
-
 import os
 import json
 import hashlib
@@ -67,14 +66,14 @@ def get_ckpt_json():
     os.mkdir(JSON_DIR_PATH)
 
   # Check updates
-  remote_data = get_remote_latest()
   local_data = get_local_latest()
+  remote_data = get_remote_latest()
 
   remote_time = None
-  local_time = None
   if remote_data != None and "updatedAt" in remote_data:
     remote_time = remote_data["updatedAt"]
 
+  local_time = None
   if local_data != None and "updatedAt" in local_data:
     local_time = local_data["updatedAt"]
 
@@ -113,8 +112,11 @@ def get_ckpt_json():
     print(traceback.format_exc())
     print(f"[comfyui-garbage-shits] Failed to download.")
 
-    if os.path.exists(CKPT_DATA_PATH) == True:
-      with open(CKPT_DATA_PATH, "r") as file:
-        return json.load(file)
-      
+    try:
+      if os.path.exists(CKPT_DATA_PATH) == True:
+        with open(CKPT_DATA_PATH, "r") as file:
+          return json.load(file)
+    except:
+      pass
+
     return []

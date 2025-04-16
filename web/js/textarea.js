@@ -15,9 +15,8 @@ const Settings = {
   "EnableBeautify": true,
   "EnableBracket": true,
   "EnableGlobalPrompts": true,
-  // "SplitDynamicPrompt": true, // deprecated
   "OverrideDynamicPrompt": true,
-  "Development": true,
+  "EnableLogging": true,
 }
 
 const Commands = {
@@ -532,11 +531,6 @@ function bracketHandler(e) {
   let center = currValue.substring(currStart, currEnd);
   let right = currValue.substring(currEnd);
 
-  // deprecated
-  // if (Settings.SplitDynamicPrompt && opening == "{") {
-  //   center = center.replace(/(\s*)\,(\s*)/g, "$1,|$2");
-  // }
-
   newValue = left + opening + center + closing + right;
   newStart = left.length + opening.length;
   newEnd = left.length + opening.length + center.length;
@@ -735,21 +729,22 @@ function changeHandler(e) {
 })();
 
 export default {
-	name: "shinich39.GarbageShits.Action",
+	name: "shinich39.GarbageShits.Textarea",
   settings: [
     {
-      id: 'shinich39.GarbageShits.Action.Development',
-      category: ['GarbageShits', 'Action', 'Development'],
-      name: 'Development',
+      id: 'shinich39.GarbageShits.Textarea.EnableLogging',
+      category: ['GarbageShits', 'Textarea', 'EnableLogging'],
+      name: 'Enable Logging',
+      tooltip: 'Write prompts in the console',
       type: 'boolean',
       defaultValue: false,
       onChange: (value) => {
-        Settings["Development"] = value;
+        Settings["EnableLogging"] = value;
       }
     },
     {
-      id: 'shinich39.GarbageShits.Action.OverrideDynamicPrompt',
-      category: ['GarbageShits', 'Action', 'OverrideDynamicPrompt'],
+      id: 'shinich39.GarbageShits.Textarea.OverrideDynamicPrompt',
+      category: ['GarbageShits', 'Textarea', 'OverrideDynamicPrompt'],
       name: 'Override Dynamic Prompt',
       tooltip: 'Override selected value via DynamicPrompt to workflow',
       type: 'boolean',
@@ -758,21 +753,9 @@ export default {
         Settings["OverrideDynamicPrompt"] = value;
       }
     },
-    // deprecated
-    // {
-    //   id: 'shinich39.GarbageShits.Action.SplitDynamicPrompt',
-    //   category: ['GarbageShits', 'Action', 'SplitDynamicPrompt'],
-    //   name: 'Split Dynamic Prompt',
-    //   tooltip: 'Split tokens when wrapping tokens to bracket',
-    //   type: 'boolean',
-    //   defaultValue: true,
-    //   onChange: (value) => {
-    //     Settings["SplitDynamicPrompt"] = value;
-    //   }
-    // },
     {
-      id: 'shinich39.GarbageShits.Action.EnableBracket',
-      category: ['GarbageShits', 'Action', 'EnableBracket'],
+      id: 'shinich39.GarbageShits.Textarea.EnableBracket',
+      category: ['GarbageShits', 'Textarea', 'EnableBracket'],
       name: 'Enable Bracket',
       tooltip: 'Insert closing bracket with opening bracket',
       type: 'boolean',
@@ -782,8 +765,8 @@ export default {
       }
     },
     {
-      id: 'shinich39.GarbageShits.Action.EnableGlobalPrompts',
-      category: ['GarbageShits', 'Action', 'EnableGlobalPrompts'],
+      id: 'shinich39.GarbageShits.Textarea.EnableGlobalPrompts',
+      category: ['GarbageShits', 'Textarea', 'EnableGlobalPrompts'],
       name: 'Enable Global Prompts',
       tooltip: 'Set global prompt to Notes. Key is Title of Note. Use to prompt with a key with a leading "$"',
       type: 'boolean',
@@ -793,8 +776,8 @@ export default {
       }
     },
     {
-      id: 'shinich39.GarbageShits.Action.EnableBeautify',
-      category: ['GarbageShits', 'Action', 'EnableBeautify'],
+      id: 'shinich39.GarbageShits.Textarea.EnableBeautify',
+      category: ['GarbageShits', 'Textarea', 'EnableBeautify'],
       name: 'Enable Beautify',
       tooltip: 'Ctrl + B, Ctrl + Shift + B',
       type: 'boolean',
@@ -804,8 +787,8 @@ export default {
       }
     },
     {
-      id: 'shinich39.GarbageShits.Action.EnableComment',
-      category: ['GarbageShits', 'Action', 'EnableComment'],
+      id: 'shinich39.GarbageShits.Textarea.EnableComment',
+      category: ['GarbageShits', 'Textarea', 'EnableComment'],
       name: 'Enable Comment',
       tooltip: 'Ctrl + \/',
       type: 'boolean',
@@ -815,8 +798,8 @@ export default {
       }
     },
     {
-      id: 'shinich39.GarbageShits.Action.EnableNavigation',
-      category: ['GarbageShits', 'Action', 'EnableNavigation'],
+      id: 'shinich39.GarbageShits.Textarea.EnableNavigation',
+      category: ['GarbageShits', 'Textarea', 'EnableNavigation'],
       name: 'Enable Navigation',
       tooltip: 'Tab',
       type: 'boolean',
@@ -826,8 +809,8 @@ export default {
       }
     },
     {
-      id: 'shinich39.GarbageShits.Action.EnableHistory',
-      category: ['GarbageShits', 'Action', 'EnableHistory'],
+      id: 'shinich39.GarbageShits.Textarea.EnableHistory',
+      category: ['GarbageShits', 'Textarea', 'EnableHistory'],
       name: 'Enable History',
       tooltip: 'Ctrl + Z, Ctrl + Shift + Z',
       type: 'boolean',
@@ -883,7 +866,7 @@ export default {
           }
 
           // Debug
-          if (Settings["Development"]) {
+          if (Settings["EnableLogging"]) {
             console.log(`[comfyui-garbage-shits][#${node.id}]`, r);
           }
 
