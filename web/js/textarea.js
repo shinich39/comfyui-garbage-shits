@@ -386,7 +386,7 @@ function beautifyHandler(e) {
       if (last) {
         if (shiftKey) {
           acc += `\n${"  ".repeat(d)}`;
-        } else {
+        } else if (d === 0){
           acc += `\n`;
         }
       }
