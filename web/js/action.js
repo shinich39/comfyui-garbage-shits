@@ -383,7 +383,7 @@ function beautifyHandler(e) {
     } else if (v === "]") {
       w++;
     } else if (v === "{") {
-      if (last && (last !== "}" && last !== "|")) {
+      if (last && last !== "|") {
         acc += `\n${"  ".repeat(d)}`;
       }
       acc += `{`;
