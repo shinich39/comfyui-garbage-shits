@@ -26,6 +26,7 @@ const Commands = {
   "tab": tabHandler,
   "shift+tab": tabHandler, // Navigation
   "ctrl+b": beautifyHandler,
+  "ctrl+shift+b": beautifyHandler,
   "ctrl+/": commentHandler,
   "shift+{": bracketHandler,
   "shift+(": bracketHandler,
@@ -383,22 +384,32 @@ function beautifyHandler(e) {
     } else if (v === "]") {
       w++;
     } else if (v === "{") {
-      if (last && last !== "|") {
-        acc += `\n${"  ".repeat(d)}`;
+      if (shiftKey) {
+        if (last && last !== "|") {
+          acc += `\n${"  ".repeat(d)}`;
+        }
+      } else {
+        if (last && d === 0) {
+          acc += `\n`;
+        }
       }
       acc += `{`;
       d++;
     } else if (v === "}") {
-      acc += `\n${"  ".repeat(--d)}}`;
+      d--;
+      if (shiftKey) {
+        acc += `\n${"  ".repeat(d)}`;
+      }
+      acc += `}`;
     } else if (v === "|") {
       acc += `|`;
     } else if (v === ",") {
-      if (last === "{" || last === "}" || last === "|") {
+      if (shiftKey && (last === "{" || last === "}" || last === "|")) {
         acc += `\n${"  ".repeat(d)}`;
       }
-      acc += ", ";
+      acc += ",";
     } else {
-      if (last === "{" || last === "}" || last === "|") {
+      if (shiftKey && (last === "{" || last === "}" || last === "|")) {
         acc += `\n${"  ".repeat(d)}`;
       }
       acc += setWeights(v, w);
@@ -785,7 +796,7 @@ export default {
       id: 'shinich39.GarbageShits.Action.EnableBeautify',
       category: ['GarbageShits', 'Action', 'EnableBeautify'],
       name: 'Enable Beautify',
-      tooltip: 'Ctrl + b',
+      tooltip: 'Ctrl + B, Ctrl + Shift + B',
       type: 'boolean',
       defaultValue: true,
       onChange: (value) => {
