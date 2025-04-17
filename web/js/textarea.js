@@ -962,7 +962,7 @@ export default {
             r = parseGlobalPrompt(r);
           }
           r = stripComments(r);
-          r = parseDynamicPrompt(r);
+          r = parseDynamicPrompt(`{${r}}`);
 
           // Overwrite the value in the serialized workflow pnginfo
           if (workflowNode?.widgets_values) {
