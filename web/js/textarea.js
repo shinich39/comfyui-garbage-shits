@@ -364,7 +364,7 @@ function beautifyHandler(e) {
 
   // const width = elem.offsetWidth;
   // const height = elem.offsetHeight;
-  const max = calcMaxChars(elem);
+  const max = calcMaxChars(elem) - 1;
 
   const values = currValue.split(/((?<!\\)[,{}()[\]|])/)
     .map((item) => item.trim())
@@ -416,12 +416,12 @@ function beautifyHandler(e) {
     console.log(parts);
   }
 
-  const writeStr = function(arr, depth) {
-    let acc = "", len = 0;
+  const writeStr = function(arr, depth, len) {
+    let acc = "";
 
     if (depth > 0) {
       acc += "{";
-      len = 1;
+      len += 1;
     }
 
     for (let i = 0; i < arr.length; i++) {
@@ -430,19 +430,20 @@ function beautifyHandler(e) {
       if (Array.isArray(item)) {
         
         if (!shiftKey) {
+
           if (depth === 0) {
             acc += "\n";
-
+            len = 0;
           }
 
         } else {
 
           acc += `\n${"  ".repeat(depth)}`;
-          
+          len = depth * 2;
+
         }
 
-        acc += writeStr(item, depth + 1);
-        len = 0;
+        acc += writeStr(item, depth + 1, len);
 
       } else if (typeof item === "string") {
 
@@ -473,9 +474,18 @@ function beautifyHandler(e) {
 
         }
 
-        if (shiftKey && max <= len + item.length) {
-          acc += `\n${"  ".repeat(depth)}`;
-          len = depth * 2;
+        if (max < len + item.length) {
+
+          console.log(len, acc)
+
+          if (shiftKey) {
+            acc += `\n${"  ".repeat(depth)}`;
+            len = depth * 2;
+          } else {
+            acc += `\n`;
+            len = 0;
+          }
+
         }
 
         acc += item;
@@ -493,16 +503,18 @@ function beautifyHandler(e) {
 
       if (shiftKey) {
         acc += `\n${"  ".repeat(depth - 1)}`;
+        len += (depth - 1) * 2;
       }
 
       acc += "}";
-      
+      len += 1;
+
     }
 
     return acc;
   }
 
-  const acc = writeStr(parts, 0).trim();
+  const acc = writeStr(parts, 0, 0).trim();
   
   if (Settings["EnableLogging"]) {
     console.log(`[comfyui-garbage-shits]`);
