@@ -367,14 +367,16 @@ function beautifyHandler(e) {
   // const height = elem.offsetHeight;
   // const max = calcMaxChars(elem);
 
-  const currParts = currValue.split(/((?<!\\)[,{}()[\]|])/)
+  const values = currValue.split(/((?<!\\)[,{}()[\]|])/)
     .map((item) => item.trim())
-    .filter(Boolean)
+    .filter(Boolean);
 
-  let acc = "", w = 0, d = 0;
-  for (let i = 0; i < currParts.length; i++) {
-    let v = currParts[i];
-    const last = acc[acc.length - 1];
+  const parts = [];
+  const parents = [parts];
+  let w = 0;
+  for (let i = 0; i < values.length; i++) {
+    const v = values[i];
+    const target = parents[parents.length - 1];
     if (v === "(") {
       w++;
     } else if (v === ")") {
@@ -384,34 +386,116 @@ function beautifyHandler(e) {
     } else if (v === "]") {
       w++;
     } else if (v === "{") {
-      if (last) {
-        if (shiftKey) {
-          acc += `\n${"  ".repeat(d)}`;
-        } else if (d === 0){
-          acc += `\n`;
-        }
+
+      // remove empty string
+      if (target[target.length - 1] === "") {
+        target.pop();
       }
-      acc += `{`;
-      d++;
+
+      const n = [];
+      target.push(n);
+      parents.push(n);
     } else if (v === "}") {
-      d--;
-      if (shiftKey) {
-        acc += `\n${"  ".repeat(d)}`;
-      }
-      acc += `}`;
+      parents.pop();
     } else if (v === "|") {
-      acc += `|`;
+      target.push("|");
     } else if (v === ",") {
-      if (shiftKey && (last === "{" || last === "}" || last === "|")) {
-        acc += `\n${"  ".repeat(d)}`;
-      }
-      acc += ",";
+      // pass
     } else {
-      if (shiftKey && (last === "{" || last === "}" || last === "|")) {
-        acc += `\n${"  ".repeat(d)}`;
+      if (target.length === 0) {
+        target.push(setWeights(v, w));
+      } else if (Array.isArray(target[target.length - 1])) {
+        target.push(setWeights(v, w));
+      } else if (typeof target[target.length - 1] === "string"){
+        target.push(setWeights(v, w))
       }
-      acc += setWeights(v, w);
     }
+  }
+
+  if (Settings["EnableLogging"]) {
+    console.log(`[comfyui-garbage-shits]`);
+    console.log(parts);
+  }
+
+  const writeStr = function(arr, depth) {
+    let acc = "";
+
+    if (depth > 0) {
+      acc += "{";
+    }
+
+    for (let i = 0; i < arr.length; i++) {
+      const item = arr[i];
+
+      if (Array.isArray(item)) {
+        
+        if (!shiftKey) {
+
+          if (depth === 0) {
+            acc += "\n";
+          }
+
+        } else {
+
+          acc += `\n${"  ".repeat(depth)}`;
+
+        }
+
+        acc += writeStr(item, depth + 1);
+
+      } else if (typeof item === "string") {
+
+        if (!shiftKey) {
+
+          if (depth === 0 && acc.endsWith("}")) {
+            acc += "\n";
+          }
+          
+        } else {
+
+          if (item !== "|") {
+
+            if (!acc.endsWith(",")) {
+              acc += `\n${"  ".repeat(depth)}`;
+            }
+
+          } else {
+
+            if (acc.endsWith("{")) {
+              acc += `\n${"  ".repeat(depth)}`;
+            }
+
+          }
+
+        }
+
+        acc += item;
+
+        if (item !== "|") {
+          acc += ",";
+        }
+
+      }
+    }
+
+    if (depth > 0) {
+
+      if (shiftKey) {
+        acc += `\n${"  ".repeat(depth - 1)}`;
+      }
+
+      acc += "}";
+      
+    }
+
+    return acc;
+  }
+
+  const acc = writeStr(parts, 0).trim();
+  
+  if (Settings["EnableLogging"]) {
+    console.log(`[comfyui-garbage-shits]`);
+    console.log(acc);
   }
 
   let newValue = acc;
