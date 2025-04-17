@@ -476,8 +476,6 @@ function beautifyHandler(e) {
 
         if (max < len + item.length) {
 
-          console.log(len, acc)
-
           if (shiftKey) {
             acc += `\n${"  ".repeat(depth)}`;
             len = depth * 2;
