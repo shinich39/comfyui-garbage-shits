@@ -63,7 +63,6 @@ function setCursor(el, start, end) {
 function getLevel(str) {
   let n = 0;
   for (let i = str.length - 1; i >= 0; i--) {
-    const ch = str[i];
     if (str[i] === "}" && (!str[i-1] || str[i-1] !== "\\")) {
       n--;
     }
@@ -365,7 +364,7 @@ function beautifyHandler(e) {
 
   // const width = elem.offsetWidth;
   // const height = elem.offsetHeight;
-  // const max = calcMaxChars(elem);
+  const max = calcMaxChars(elem);
 
   const values = currValue.split(/((?<!\\)[,{}()[\]|])/)
     .map((item) => item.trim())
@@ -418,10 +417,11 @@ function beautifyHandler(e) {
   }
 
   const writeStr = function(arr, depth) {
-    let acc = "";
+    let acc = "", len = 0;
 
     if (depth > 0) {
       acc += "{";
+      len = 1;
     }
 
     for (let i = 0; i < arr.length; i++) {
@@ -430,18 +430,19 @@ function beautifyHandler(e) {
       if (Array.isArray(item)) {
         
         if (!shiftKey) {
-
           if (depth === 0) {
             acc += "\n";
+
           }
 
         } else {
 
           acc += `\n${"  ".repeat(depth)}`;
-
+          
         }
 
         acc += writeStr(item, depth + 1);
+        len = 0;
 
       } else if (typeof item === "string") {
 
@@ -449,6 +450,7 @@ function beautifyHandler(e) {
 
           if (depth === 0 && acc.endsWith("}")) {
             acc += "\n";
+            len = 0;
           }
           
         } else {
@@ -457,22 +459,31 @@ function beautifyHandler(e) {
 
             if (!acc.endsWith(",")) {
               acc += `\n${"  ".repeat(depth)}`;
+              len = depth * 2;
             }
 
           } else {
 
             if (acc.endsWith("{")) {
               acc += `\n${"  ".repeat(depth)}`;
+              len = depth * 2;
             }
 
           }
 
         }
 
+        if (shiftKey && max <= len + item.length) {
+          acc += `\n${"  ".repeat(depth)}`;
+          len = depth * 2;
+        }
+
         acc += item;
+        len += item.length;
 
         if (item !== "|") {
           acc += ",";
+          len += 1;
         }
 
       }
