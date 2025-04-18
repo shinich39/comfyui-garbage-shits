@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-garbage-shits"
 description = "Collection of garbage"
-version = "1.0.5"
+version = "1.0.6"
 license = { file = "LICENSE" }
 
 [project.urls]

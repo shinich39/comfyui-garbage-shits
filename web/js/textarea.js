@@ -211,7 +211,7 @@ function parseGlobalPrompt(prompt) {
   const globalPrompts = getGlobalPrompts();
 
   for (const [key, values] of Object.entries(globalPrompts)) {
-    prompt = prompt.replaceAll(`$${key}`, () => values[Math.floor(Math.random() * values.length)] || "");
+    prompt = prompt.replaceAll(`$${key}`, () => "{"+(values[Math.floor(Math.random() * values.length)] || "")+"}");
   }
 
   return prompt;
