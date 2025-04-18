@@ -5,9 +5,6 @@ import { api } from "../../../scripts/api.js";
 import { showError } from "./utils/error.js";
 
 const CLASS_NAME = "RunJavascript";
-const MIN_SEED = 0;
-const MAX_SEED = parseInt("0xffffffffffffffff", 16);
-const STEPS_OF_SEED = 10;
 const DEFAULT_MARGIN_X = 32;
 const DEFAULT_MARGIN_Y = 64;
 
@@ -347,6 +344,9 @@ const connect = function(outputNode, inputNode, outputName, inputName) {
 }
 
 const generateSeed = function() {
+  const MIN_SEED = 0;
+  const MAX_SEED = parseInt("0xffffffffffffffff", 16);
+  const STEPS_OF_SEED = 10;
   let max = Math.min(1125899906842624, MAX_SEED);
   let min = Math.max(-1125899906842624, MIN_SEED);
   let range = (max - min) / (STEPS_OF_SEED / 10);
@@ -643,7 +643,7 @@ const setRect = function(node, [x, y, width, height]) {
 }
 
 export default {
-	name: "shinich39.GarbageShits.Run",
+	name: "shinich39.GarbageShits.RunJavascript",
   setup() {
     // append event to end
     setTimeout(() => {

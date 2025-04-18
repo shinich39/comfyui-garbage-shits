@@ -409,11 +409,11 @@ async function getImages(dirPath) {
     }
   });
 
-  console.log("[comfyui-garbage-shits] Image event added.");
+  console.log("[comfyui-garbage-shits] ImageLoaders event added.");
 })();
 
 export default {
-	name: `shinich39.GarbageShits.Image`,
+	name: `shinich39.GarbageShits.ImageLoaders`,
   async afterConfigureGraph(missingNodeTypes) {
     for (const node of app.graph._nodes) {
       if (node.comfyClass === CLASS_NAME) {

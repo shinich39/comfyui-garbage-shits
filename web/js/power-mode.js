@@ -1,7 +1,6 @@
 "use strict";
 
 import { api } from "../../../scripts/api.js";
-import { app } from "../../../scripts/app.js";
 
 function wait(delay) {
   return new Promise(function (resolve) {
@@ -17,11 +16,11 @@ async function send(id) {
 }
 
 export default {
-	name: "shinich39.GarbageShits.Power",
+	name: "shinich39.GarbageShits.PowerMode",
   settings: [
     {
-      id: 'shinich39.GarbageShits.Power.Mode',
-      category: ['GarbageShits', 'Power', 'Mode'],
+      id: 'shinich39.GarbageShits.PowerMode.Mode',
+      category: ['GarbageShits', 'PowerMode', 'Mode'],
       name: 'Mode',
       type: 'combo',
       options: ['None', 'Sleep', 'Screen Saver'],

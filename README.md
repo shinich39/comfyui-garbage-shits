@@ -18,6 +18,7 @@ Collection of garbage
 - Top level dynamic prompt
 - Nested dynamic prompt
 - Fix dynamic prompt value in workflow
+- Move canvas to target node when dragging
 
 ## Examples
 
@@ -39,13 +40,17 @@ Drag and drop image on ComfyUI to test.
 
 <img src="./examples/nested-dynamic-prompt.png" width="512px" />
 
-- Beautify prompt - Ctrl + B
+- Beautify prompt: Ctrl + B
 
 <img src="./examples/beautify-01.png" width="512px" />
 
-- Beautify prompt - Ctrl + Shift + B
+- Beautify prompt: Ctrl + Shift + B
 
 <img src="./examples/beautify-02.png" width="512px" />
+
+- Search target
+
+<img src="./examples/search-target.gif" width="768px" />
 
 - Random lora bypass
 

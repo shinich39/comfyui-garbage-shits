@@ -334,14 +334,14 @@ async function updateMetaNodes() {
 }
 
 export default {
-	name: `shinich39.GarbageShits.Metadata`,
+	name: `shinich39.GarbageShits.MetadataLoaders`,
   setup() {
     api.addEventListener("promptQueued", async function() {
       clearCaches();
       await updateMetaNodes();
-      console.log("[comfyui-garbage-shits] Metadata updated.");
+      console.log("[comfyui-garbage-shits] MetadataLoaders updated.");
     });
-    console.log("[comfyui-garbage-shits] Metadata event added.");
+    console.log("[comfyui-garbage-shits] MetadataLoaders event added.");
   },
   nodeCreated(node) {
     if (Types.Meta.indexOf(node.comfyClass) > -1) {

@@ -2,18 +2,18 @@
 @author: shinich39
 @title: comfyui-garbage-shits
 @nickname: comfyui-garbage-shits
-@version: 1.0.6
+@version: 1.0.7
 @description: Collection of garbage
 """
 
 from .install import install_wakepy
 from .py.api import *
-from .py.metadata import *
-from .py.random import *
-from .py.image import *
-from .py.run import *
+from .py.metadata_lodaers import *
+from .py.random_routes import *
+from .py.image_loaders import *
+from .py.run_javascript import *
 from .py.civitai import *
-from .py.power import *
+from .py.power_mode import *
 
 install_wakepy()
 

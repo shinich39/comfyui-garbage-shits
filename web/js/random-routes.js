@@ -3,11 +3,6 @@ import { api } from "../../scripts/api.js";
 
 const CLASS_NAME = "RandomRoutes";
 
-const DefaultState = {
-  type: "*",
-  inProgress: false,
-}
-
 function shuffle(arr) {
   let i = arr.length;
   while (i > 0) {
@@ -19,20 +14,23 @@ function shuffle(arr) {
 }
 
 function initState(node) {
-  if (!node.$shits) {
-    node.$shits = JSON.parse(JSON.stringify(DefaultState));
+  if (!node.$$$shits) {
+    node.$$$shits = JSON.parse(JSON.stringify({
+      type: "*",
+      inProgress: false,
+    }));
   }
 }
 
 function shuffleInputs(node) {
   initState(node);
 
-  if (node.$shits.inProgress) {
+  if (node.$$$shits.inProgress) {
     return;
   }
 
   // Prevent call node.onConnectionsChange()
-  node.$shits.inProgress = true;
+  node.$$$shits.inProgress = true;
 
   const connectedOutputs = [];
   let connectedInputs = [];
@@ -67,7 +65,7 @@ function shuffleInputs(node) {
     outputNode.connect(output.slotIndex, inputNode, input.slotIndex);
   }
 
-  node.$shits.inProgress = false;
+  node.$$$shits.inProgress = false;
 }
 
 function getSlotType(node) {
@@ -94,7 +92,7 @@ function setLinkColors(node) {
   initState(node);
 
   try {
-    const color = LGraphCanvas.link_type_colors[node.$shits.type];
+    const color = LGraphCanvas.link_type_colors[node.$$$shits.type];
     for (const link in app.graph.links) {
       if (!link) {
         continue; // pass unconnected link
@@ -129,17 +127,17 @@ function initNode(node) {
     node.onConnectionsChange = function(type, index, connected, link_info) {
       initState(this);
   
-      if (!this.inputs || !this.outputs || this.$shits.inProgress) {
+      if (!this.inputs || !this.outputs || this.$$$shits.inProgress) {
         return;
       }
   
-      this.$shits.inProgress = true;
+      this.$$$shits.inProgress = true;
   
       // const isInput = type === LiteGraph.INPUT;
       // const isOutput = type === LiteGraph.OUTPUT;
   
       // Set input type
-      this.$shits.type = getSlotType(this);
+      this.$$$shits.type = getSlotType(this);
   
       // Get connected input links
       const inputConnections = this.inputs.reduce((acc, input) => {
@@ -174,7 +172,7 @@ function initNode(node) {
         for (let i = 0; i < inputConnections.length; i++) {
           const c = inputConnections[i];
   
-          this.addInput("input" + i, this.$shits.type, {
+          this.addInput("input" + i, this.$$$shits.type, {
             label: " ",
           });
   
@@ -185,7 +183,7 @@ function initNode(node) {
       }
   
       // Create last input
-      this.addInput(``, this.$shits.type);
+      this.addInput(``, this.$$$shits.type);
   
       // Remove overflowed outputs
       while(this.outputs && this.outputs.length >= this.inputs.length) {
@@ -195,13 +193,13 @@ function initNode(node) {
       // Create new outputs same number as inputs
       while(this.outputs && this.outputs.length < this.inputs.length - 1) {
         const i = this.outputs.length;
-        this.addOutput("output"+i, this.$shits.type || "*", {
-          label: i === 0 ? this.$shits.type || "*" : " "
+        this.addOutput("output"+i, this.$$$shits.type || "*", {
+          label: i === 0 ? this.$$$shits.type || "*" : " "
         });
       }
       
       setLinkColors(this);
-      this.$shits.inProgress = false;
+      this.$$$shits.inProgress = false;
     }  
   }, 1024);
   
@@ -229,7 +227,7 @@ api.addEventListener("promptQueued", ({ detail }) => {
 });
 
 export default {
-	name: "shinich39.GarbageShits.Random",
+	name: "shinich39.GarbageShits.RandomRoutes",
 	nodeCreated(node, app) {
     if (node.comfyClass === CLASS_NAME) {
       initNode(node);
