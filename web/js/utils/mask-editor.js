@@ -9,11 +9,6 @@ const DEFAULT_MASK_COLOR = "rgb(0,0,0)";
 const DEFAULT_BRUSH_COLOR = "rgba(0,0,0,0.2)";
 let movingMode = false;
 
-function selectNode(node) {
-  app.canvas.deselectAllNodes();
-  app.canvas.selectNode(node);
-}
-
 // global event
 document.addEventListener('pointerup', pointerUpEvent, true);
 
@@ -231,7 +226,6 @@ function initMaskEditor() {
   self.onKeyDown = function (e) {
     keyDownEvent.apply(this, [e]);
     onKeyDown?.apply(this, arguments);
-    selectNode(this);
   };
 
   // canvas
@@ -437,9 +431,6 @@ function pointerDownEvent(self, e) {
       this.setBrushColor(self, e);
       return;
     }
-
-    // select node
-    selectNode(this.node);
 
     this.drawingMode = true;
 
@@ -778,32 +769,11 @@ function moveCanvas(x, y) {
 }
 
 async function keyDownEvent(e) {
-  const { key, ctrlKey, metaKey, shiftKey } = e;
-  if (key === "-" || key === "=") {
-    e.preventDefault();
-    e.stopPropagation();
-    zoomHandler(e);
-  } else if (key === " ") {
+  const { key } = e;
+  if (key === " ") {
     e.preventDefault();
     e.stopPropagation();
     spaceBarDownEvent(e);
-  }
-}
-
-function zoomHandler(e) {
-  const { key, ctrlKey, metaKey, shiftKey } = e;
-  let n = key === "-" ? 1 : -1;
-  const prevScale = app.canvas.ds.scale;
-  const nextScale = Math.max(0.5, Math.min(10, Math.round((prevScale - n) * 10) / 10));
-  const cx = app.canvas.ds.element.width / 2;
-  const cy = app.canvas.ds.element.height / 2;
-  app.canvas.ds.changeScale(nextScale, [cx, cy]);
-  app.canvas.graph.change();
-  selectNode(this);
-
-  // fix brush size
-  if (this.$$shits?.MASK) {
-    this.$$shits.MASK.showBrush();
   }
 }
 
@@ -835,11 +805,9 @@ function pointerUpEvent(e) {
 
       if (w.drawingMode) {
         w.saveEvent();
-        selectNode(node);
       }
 
       if (movingMode) {
-        // selectNode(node);
         document.getElementById("graph-canvas").focus();
       }
 
