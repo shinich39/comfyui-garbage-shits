@@ -54,11 +54,11 @@ Drag and drop image on ComfyUI to test.
 
 - Masking
 
-<img src="./examples/masking.png" width="768px" />
+<img src="./examples/mask.png" width="768px" />
 
 - Sketching
 
-<img src="./examples/sketching.png" width="768px" />
+<img src="./examples/sketch.png" width="768px" />
 
 - Random lora bypass
 
