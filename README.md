@@ -52,9 +52,13 @@ Drag and drop image on ComfyUI to test.
 
 <img src="./examples/search-target.gif" width="768px" />
 
-- Masking and Sketching
+- Masking
 
 <img src="./examples/masking.png" width="768px" />
+
+- Sketching
+
+<img src="./examples/sketching.png" width="768px" />
 
 - Random lora bypass
 
