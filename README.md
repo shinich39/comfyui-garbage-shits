@@ -15,6 +15,7 @@ Collection of garbage
 - Run only specific group
 - Beautify textarea
 - Global prompts via Note node
+- Nested global prompts
 - Top level dynamic prompt
 - Nested dynamic prompt
 - Fix dynamic prompt value in workflow

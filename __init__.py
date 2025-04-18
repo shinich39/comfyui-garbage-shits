@@ -2,7 +2,7 @@
 @author: shinich39
 @title: comfyui-garbage-shits
 @nickname: comfyui-garbage-shits
-@version: 1.0.7
+@version: 1.0.8
 @description: Collection of garbage
 """
 
