@@ -6,38 +6,54 @@ Collection of garbage
 
 - Improve keyboard command in textarea
 - Run javascript code in textarea with customized methods
-- Scalable random selector node
 - Show metadata used by checkpoint creator
 - Load image with mask and sketch
 - Quickly masking and sketching on preview
 - Prevent system sleep and screen saver
-- Nestable dynamic prompt in textarea
-- Fix dynamic prompt value in workflow
 - Scalable plot using javascript
 - Set same seed to all samplers
-- Run only specific group in workflow
+- Run only specific group
 - Beautify textarea
-- Set global prompts
+- Global prompts via Note node
+- Top level dynamic prompt
+- Nested dynamic prompt
+- Fix dynamic prompt value in workflow
 
 ## Examples
 
 Drag and drop image on ComfyUI to test.
 
-- Global seed
+- Set same seed to all samplers
 
-<img src="./examples/global-seed.png" width="512px" />
+<img src="./examples/global-seed.png" width="768px" />
 
 - Global prompts
 
 <img src="./examples/global-prompts.png" width="768px" />
 
-- Random lora
+- Top level dynamic prompt
 
-<img src="./examples/random-lora.png" width="512px" />
+<img src="./examples/toplevel-dynamic-prompt.png" width="512px" />
+
+- Nested dynamic prompt
+
+<img src="./examples/nested-dynamic-prompt.png" width="512px" />
+
+- Beautify prompt - Ctrl + B
+
+<img src="./examples/beautify-01.png" width="512px" />
+
+- Beautify prompt - Ctrl + Shift + B
+
+<img src="./examples/beautify-02.png" width="512px" />
+
+- Random lora bypass
+
+<img src="./examples/random-lora.png" width="768px" />
 
 - Random connection
 
-<img src="./examples/random-connection.png" width="512px" />
+<img src="./examples/random-connection.png" width="768px" />
 
 - Run random group
 
