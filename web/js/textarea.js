@@ -9,14 +9,15 @@ let prevElement = null,
     history = [];
 
 const Settings = {
-  "EnableHistory": true,
-  "EnableNativation": true,
-  "EnableComment": true,
-  "EnableBeautify": true,
-  "EnableBracket": true,
-  "EnableGlobalPrompts": true,
+  "History": true,
+  "Navigation": true,
+  "Comment": true,
+  "Beautify": true,
+  "Bracket": true,
+  "GlobalPrompts": true,
+  "CollapsePrompt": true,
   "OverrideDynamicPrompt": true,
-  "EnableLogging": true,
+  "Debug": false,
 }
 
 const Commands = {
@@ -275,7 +276,7 @@ function getNextHistory(e) {
 }
 
 function addHistory(e, newHistory) {
-  if (!Settings.EnableHistory) {
+  if (!Settings.History) {
     return;
   }
   if (!prevElement || !e.target.isSameNode(prevElement)) {
@@ -298,7 +299,7 @@ function addHistory(e, newHistory) {
 }
 
 function undoHandler(e) {
-  if (!Settings.EnableHistory) {
+  if (!Settings.History) {
     return;
   }
   e.preventDefault();
@@ -313,7 +314,7 @@ function undoHandler(e) {
 }
 
 function redoHandler(e) {
-  if (!Settings.EnableHistory) {
+  if (!Settings.History) {
     return;
   }
   e.preventDefault();
@@ -328,7 +329,7 @@ function redoHandler(e) {
 }
 
 function tabHandler(e) {
-  if (!Settings.EnableNativation) {
+  if (!Settings.Navigation) {
     return;
   }
   e.preventDefault();
@@ -356,7 +357,7 @@ function tabHandler(e) {
 }
 
 function beautifyHandler(e) {
-  if (!Settings.EnableBeautify) {
+  if (!Settings.Beautify) {
     return;
   }
   e.preventDefault();
@@ -415,7 +416,7 @@ function beautifyHandler(e) {
     }
   }
 
-  if (Settings["EnableLogging"]) {
+  if (Settings["Debug"]) {
     console.log(`[comfyui-garbage-shits]`);
     console.log(parts);
   }
@@ -518,7 +519,7 @@ function beautifyHandler(e) {
 
   const acc = writeStr(parts, 0, 0).trim();
   
-  if (Settings["EnableLogging"]) {
+  if (Settings["Debug"]) {
     console.log(`[comfyui-garbage-shits]`);
     console.log(acc);
   }
@@ -545,7 +546,7 @@ function beautifyHandler(e) {
 }
 
 function commentHandler(e) {
-  if (!Settings.EnableComment) {
+  if (!Settings.Comment) {
     return;
   }
   e.preventDefault();
@@ -619,7 +620,7 @@ function commentHandler(e) {
 }
 
 function bracketHandler(e) {
-  if (!Settings.EnableBracket) {
+  if (!Settings.Bracket) {
     return;
   }
   e.preventDefault();
@@ -661,7 +662,7 @@ function bracketHandler(e) {
 }
 
 function removeBracketHandler(e) {
-  if (!Settings.EnableBracket) {
+  if (!Settings.Bracket) {
     return;
   }
   const { key, shiftKey, ctrlKey } = parseKey(e);
@@ -840,14 +841,14 @@ export default {
 	name: "shinich39.GarbageShits.Textarea",
   settings: [
     {
-      id: 'shinich39.GarbageShits.Textarea.EnableLogging',
-      category: ['GarbageShits', 'Textarea', 'EnableLogging'],
-      name: 'Enable Logging',
+      id: 'shinich39.GarbageShits.Textarea.Debug',
+      category: ['GarbageShits', 'Textarea', 'Debug'],
+      name: 'Debug',
       tooltip: 'Write prompts in the console',
       type: 'boolean',
       defaultValue: false,
       onChange: (value) => {
-        Settings["EnableLogging"] = value;
+        Settings["Debug"] = value;
       }
     },
     {
@@ -862,69 +863,80 @@ export default {
       }
     },
     {
-      id: 'shinich39.GarbageShits.Textarea.EnableBracket',
-      category: ['GarbageShits', 'Textarea', 'EnableBracket'],
-      name: 'Enable Bracket',
+      id: 'shinich39.GarbageShits.Textarea.CollapsePrompt',
+      category: ['GarbageShits', 'Textarea', 'CollapsePrompt'],
+      name: 'Collapse Prompt',
+      tooltip: 'Remove empty tokens and multiple whitespaces before generation.',
+      type: 'boolean',
+      defaultValue: true,
+      onChange: (value) => {
+        Settings["CollapsePrompt"] = value;
+      }
+    },
+    {
+      id: 'shinich39.GarbageShits.Textarea.GlobalPrompts',
+      category: ['GarbageShits', 'Textarea', 'GlobalPrompts'],
+      name: 'Global Prompts',
+      tooltip: 'Set global prompt to Notes. Key is Title of Note. Use to prompt with a key leading "$"',
+      type: 'boolean',
+      defaultValue: true,
+      onChange: (value) => {
+        Settings["GlobalPrompts"] = value;
+      }
+    },
+    {
+      id: 'shinich39.GarbageShits.Textarea.Bracket',
+      category: ['GarbageShits', 'Textarea', 'Bracket'],
+      name: 'Bracket',
       tooltip: 'Insert closing bracket with opening bracket',
       type: 'boolean',
       defaultValue: true,
       onChange: (value) => {
-        Settings["EnableBracket"] = value;
+        Settings["Bracket"] = value;
       }
     },
     {
-      id: 'shinich39.GarbageShits.Textarea.EnableGlobalPrompts',
-      category: ['GarbageShits', 'Textarea', 'EnableGlobalPrompts'],
-      name: 'Enable Global Prompts',
-      tooltip: 'Set global prompt to Notes. Key is Title of Note. Use to prompt with a key with a leading "$"',
-      type: 'boolean',
-      defaultValue: true,
-      onChange: (value) => {
-        Settings["EnableGlobalPrompts"] = value;
-      }
-    },
-    {
-      id: 'shinich39.GarbageShits.Textarea.EnableBeautify',
-      category: ['GarbageShits', 'Textarea', 'EnableBeautify'],
-      name: 'Enable Beautify',
+      id: 'shinich39.GarbageShits.Textarea.Beautify',
+      category: ['GarbageShits', 'Textarea', 'Beautify'],
+      name: 'Beautify',
       tooltip: 'Ctrl + B, Ctrl + Shift + B',
       type: 'boolean',
       defaultValue: true,
       onChange: (value) => {
-        Settings["EnableBeautify"] = value;
+        Settings["Beautify"] = value;
       }
     },
     {
-      id: 'shinich39.GarbageShits.Textarea.EnableComment',
-      category: ['GarbageShits', 'Textarea', 'EnableComment'],
-      name: 'Enable Comment',
+      id: 'shinich39.GarbageShits.Textarea.Comment',
+      category: ['GarbageShits', 'Textarea', 'Comment'],
+      name: 'Comment',
       tooltip: 'Ctrl + \/',
       type: 'boolean',
       defaultValue: true,
       onChange: (value) => {
-        Settings["EnableComment"] = value;
+        Settings["Comment"] = value;
       }
     },
     {
-      id: 'shinich39.GarbageShits.Textarea.EnableNavigation',
-      category: ['GarbageShits', 'Textarea', 'EnableNavigation'],
-      name: 'Enable Navigation',
+      id: 'shinich39.GarbageShits.Textarea.Navigation',
+      category: ['GarbageShits', 'Textarea', 'Navigation'],
+      name: 'Navigation',
       tooltip: 'Tab',
       type: 'boolean',
       defaultValue: true,
       onChange: (value) => {
-        Settings["EnableNavigation"] = value;
+        Settings["Navigation"] = value;
       }
     },
     {
-      id: 'shinich39.GarbageShits.Textarea.EnableHistory',
-      category: ['GarbageShits', 'Textarea', 'EnableHistory'],
-      name: 'Enable History',
+      id: 'shinich39.GarbageShits.Textarea.History',
+      category: ['GarbageShits', 'Textarea', 'History'],
+      name: 'History',
       tooltip: 'Ctrl + Z, Ctrl + Shift + Z',
       type: 'boolean',
       defaultValue: true,
       onChange: (value) => {
-        Settings["EnableHistory"] = value;
+        Settings["History"] = value;
       }
     },
   ],
@@ -962,11 +974,15 @@ export default {
           let r = await origSerializeValue?.apply(this, arguments) ?? widget.value;
 
           // Bugfix: Custom-Script presetText.js has overwrite original dynamicPrompt
-          if (Settings["EnableGlobalPrompts"]) {
+          if (Settings["GlobalPrompts"]) {
             r = parseGlobalPrompt(r);
           }
           r = stripComments(r);
           r = parseDynamicPrompt(`{${r}}`);
+
+          if (Settings["CollapsePrompt"]) {
+            r = r.replace(/\s+/g, " ").replace(/\s?,\s?/g, ",").replace(/,,/, ",").replace(/,/g, ", ");
+          }
 
           // Overwrite the value in the serialized workflow pnginfo
           if (workflowNode?.widgets_values) {
@@ -974,7 +990,7 @@ export default {
           }
 
           // Debug
-          if (Settings["EnableLogging"]) {
+          if (Settings["Debug"]) {
             console.log(`[comfyui-garbage-shits][#${node.id}]`, r);
           }
 
