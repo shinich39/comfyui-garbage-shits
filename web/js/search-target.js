@@ -6,10 +6,6 @@ const Settings = {
   "Enable": true,
 }
 
-function chkDragging() {
-  return this.connecting_links && this.connecting_links.length > 0;
-}
-
 function isValidType(a, b) {
   a = a.toLowerCase();
   if (["any", "*"].indexOf(a) > -1) {
@@ -101,7 +97,8 @@ try {
       return r;
     }
 
-    onDrag = chkDragging.apply(this, [e]);
+    onDrag = this.connecting_links && this.connecting_links.length > 0;
+
     if (onDrag) {
       try {
         const { input, output, node, slot } = this.connecting_links[0];
