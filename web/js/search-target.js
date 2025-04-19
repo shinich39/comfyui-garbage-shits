@@ -65,7 +65,7 @@ try {
         return i;
       }
     }
-    return -1;
+    return 0;
   }
 
   function moveCanvasToTarget(target) {
@@ -112,6 +112,7 @@ try {
 
           targets = [node, ...validTargets].sort((a, b) => a.pos[0] - b.pos[0]);
 
+          // targetIndex = targets.findIndex((n) => n == node) + 1;
           targetIndex = getTargetIndex();
         }
       } catch(err) {
